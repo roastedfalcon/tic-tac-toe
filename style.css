@@ -1,0 +1,55 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form {
+  display: none;
+  grid-template-columns: 1fr 2fr;
+  row-gap: 30px;
+  margin: 30px;
+}
+
+form button {
+  grid-column: 1 / -1;
+  width: 80px;
+  height: 30px;
+  justify-self: center;
+}
+
+#gameboard {
+  display: none;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  height: 450px;
+  width: 450px;
+  gap: 10px;
+}
+
+.board-cell {
+  background-color: rgb(230, 230, 230);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: larger;
+  font-weight: bolder;
+}
+
+#button-container {
+  display: none;
+  gap: 20px;
+  margin: 20px;
+}
+
+form.active {
+  display: grid;
+}
+
+#gameboard.active {
+  display: grid;
+}
+
+#button-container.active {
+  display: flex;
+}
