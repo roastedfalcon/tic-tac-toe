@@ -32,7 +32,7 @@ form button {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: larger;
+  font-size: 50px;
   font-weight: bolder;
 }
 
