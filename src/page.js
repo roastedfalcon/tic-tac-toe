@@ -1,5 +1,11 @@
 import { getBoardValue } from "./board";
-import { move, createPlayers, playAgain, turn, getWhoseTurn } from "./game";
+import {
+  move,
+  createPlayers,
+  playAgain,
+  startGame,
+  getWhoseTurn,
+} from "./game";
 
 const cells = document.querySelectorAll(".board-cell");
 const playAgainButton = document.querySelector("#play-again");
@@ -21,7 +27,7 @@ cells.forEach((cell) => {
   };
 });
 
-const startGame = (e) => {
+const loadGamePage = (e) => {
   e.preventDefault();
 
   const player1Name = document.getElementById("player1-name").value;
@@ -34,7 +40,7 @@ const startGame = (e) => {
   buttonContainer.classList.add("active");
   form.classList.remove("active");
 
-  turn(true);
+  startGame();
   displayMessage(
     `${
       players.filter((player) => player.mark === getWhoseTurn())[0].name
@@ -46,15 +52,18 @@ export const displayMessage = (message) => {
   messageBox.textContent = message;
 };
 
-export const emptyBoard = () => {
+const emptyBoard = () => {
   cells.forEach((cell) => {
     cell.textContent = "";
   });
 };
 
-playAgainButton.onclick = playAgain;
+playAgainButton.onclick = () => {
+  emptyBoard();
+  playAgain();
+};
 
-form.onsubmit = startGame;
+form.onsubmit = loadGamePage;
 
 newGameButton.onclick = () => {
   window.location.reload();

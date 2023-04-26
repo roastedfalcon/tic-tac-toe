@@ -1,11 +1,11 @@
 import Player from "./player";
 import { getBoard, getBoardValue, setBoardValue, resetBoard } from "./board";
-import { displayMessage, emptyBoard } from "./page";
+import { displayMessage } from "./page";
 
 const marks = ["X", "O"];
 let whoseTurn;
-let turnCount = 0;
-let gameOver = false;
+let turnCount;
+let gameOver;
 
 let player1, player2;
 
@@ -17,9 +17,15 @@ export const createPlayers = (player1Name, player2Name) => {
   return [player1, player2];
 };
 
+export const startGame = () => {
+  turnCount = 0;
+  gameOver = false;
+  turn(true);
+};
+
 export const getWhoseTurn = () => whoseTurn;
 
-export const turn = (newGame = false) => {
+const turn = (newGame = false) => {
   if (newGame === true) {
     whoseTurn = marks[Math.floor(Math.random() * marks.length)];
   } else {
@@ -116,11 +122,9 @@ const reportWin = (winningMark) => {
 
 export function playAgain() {
   resetBoard();
-  emptyBoard();
-  turnCount = 0;
-  gameOver = false;
 
-  turn(true);
+  startGame();
+
   displayMessage(
     `${
       [player1, player2].filter((player) => player.mark === whoseTurn)[0].name
