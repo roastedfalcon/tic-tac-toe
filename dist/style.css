@@ -5,21 +5,56 @@ body {
 }
 
 form {
+  display: flex;
+  flex-direction: column;
+}
+
+fieldset {
+  border: none;
+}
+
+input[type="radio"] {
   display: none;
-  grid-template-columns: 1fr 2fr;
-  row-gap: 30px;
-  margin: 30px;
+}
+
+#mode-selection {
+  display: flex;
+}
+
+#mode-selection label {
+  background-color: rgb(231, 231, 231);
+  cursor: pointer;
+
+  display: inline-block;
+  height: 70px;
+  width: 100px;
+  margin: 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mode-selection input[type="radio"]:checked + label {
+  border: 3px solid black;
+}
+
+#player-names {
+  display: grid;
+  grid-template-columns: auto auto;
+  row-gap: 20px;
 }
 
 form button {
-  grid-column: 1 / -1;
   width: 80px;
   height: 30px;
-  justify-self: center;
+  align-self: center;
+  margin-top: 30px;
 }
 
 #gameboard {
-  display: none;
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   height: 450px;
@@ -37,19 +72,12 @@ form button {
 }
 
 #button-container {
-  display: none;
+  display: flex;
   gap: 20px;
   margin: 20px;
 }
 
-form.active {
-  display: grid;
-}
-
-#gameboard.active {
-  display: grid;
-}
-
-#button-container.active {
-  display: flex;
+.inactive {
+  position: absolute;
+  left: -9999px;
 }

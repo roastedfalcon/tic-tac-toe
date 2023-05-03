@@ -1,10 +1,12 @@
 export default class Player {
   #name;
   #mark;
-  constructor(name, mark) {
+  #isCPU;
+  constructor(name, mark, isCPU = false) {
     this.#name = name;
     this.#mark = mark;
-    this.myTurn = false;
+    this.#isCPU = isCPU;
+    //this.myTurn = false;
   }
 
   get name() {
@@ -15,7 +17,13 @@ export default class Player {
     return this.#mark;
   }
 
+  get isCPU() {
+    return this.#isCPU;
+  }
+
+  /*
   toggleMyTurn() {
     this.myTurn = !this.myTurn;
   }
+  */
 }

@@ -1,11 +1,5 @@
 import { getBoardValue } from "./board";
-import {
-  move,
-  createPlayers,
-  playAgain,
-  startGame,
-  getWhoseTurn,
-} from "./game";
+import { move, createPlayers, playAgain, startGame, setVScpu } from "./game";
 
 const cells = document.querySelectorAll(".board-cell");
 const playAgainButton = document.querySelector("#play-again");
@@ -13,9 +7,33 @@ const newGameButton = document.querySelector("#new-game");
 const boardContainer = document.querySelector("#gameboard");
 const buttonContainer = document.querySelector("#button-container");
 const messageBox = document.querySelector("#game-message");
-const form = document.querySelector("form");
 
-form.classList.add("active");
+const form = document.querySelector("form");
+const formSubmitButton = form.querySelector('button[type="submit"');
+const playerNamesInputContainer = form.querySelector("#player-names");
+const vsPlayerRadioButton = form.querySelector("#mode-player");
+const vsCPUradioButton = form.querySelector("#mode-cpu");
+
+formSubmitButton.classList.add("inactive");
+playerNamesInputContainer.classList.add("inactive");
+boardContainer.classList.add("inactive");
+buttonContainer.classList.add("inactive");
+
+vsPlayerRadioButton.addEventListener("click", () => {
+  playerNamesInputContainer.classList.remove("inactive");
+  formSubmitButton.classList.remove("inactive");
+});
+
+vsCPUradioButton.addEventListener("click", () => {
+  playerNamesInputContainer.classList.add("inactive");
+  formSubmitButton.classList.remove("inactive");
+});
+
+export const updateBoardCell = (row, col, mark) => {
+  document.querySelector(
+    `[data-row="${row}"][data-column="${col}"]`
+  ).textContent = mark;
+};
 
 cells.forEach((cell) => {
   cell.onclick = () => {
@@ -23,7 +41,6 @@ cells.forEach((cell) => {
     const col = Number(cell.dataset.column);
 
     move(row, col);
-    cell.textContent = getBoardValue(row, col);
   };
 });
 
@@ -33,19 +50,17 @@ const loadGamePage = (e) => {
   const player1Name = document.getElementById("player1-name").value;
   const player2Name = document.getElementById("player2-name").value;
 
-  //NOTE: Players are able create names with just spaces
-  const players = createPlayers(player1Name, player2Name);
+  if (vsCPUradioButton.checked) setVScpu();
 
-  boardContainer.classList.add("active");
-  buttonContainer.classList.add("active");
-  form.classList.remove("active");
+  createPlayers(player1Name, player2Name);
+
+  //NOTE: Players are able create names with just spaces
+
+  boardContainer.classList.remove("inactive");
+  buttonContainer.classList.remove("inactive");
+  form.classList.add("inactive");
 
   startGame();
-  displayMessage(
-    `${
-      players.filter((player) => player.mark === getWhoseTurn())[0].name
-    }'s turn`
-  );
 };
 
 export const displayMessage = (message) => {

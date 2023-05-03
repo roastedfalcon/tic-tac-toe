@@ -1,6 +1,12 @@
 import Player from "./player";
-import { getBoard, getBoardValue, setBoardValue, resetBoard } from "./board";
-import { displayMessage } from "./page";
+import {
+  getBoard,
+  getBoardValue,
+  setBoardValue,
+  resetBoard,
+  getEmptySpaceIndecies,
+} from "./board";
+import { updateBoardCell, displayMessage } from "./page";
 
 const marks = ["X", "O"];
 let whoseTurn;
@@ -8,13 +14,21 @@ let turnCount;
 let gameOver;
 
 let player1, player2;
+let vsCPU = false;
+
+export const setVScpu = () => {
+  vsCPU = true;
+};
 
 export const createPlayers = (player1Name, player2Name) => {
-  player1 = new Player(player1Name != "" ? player1Name : "Player 1", "X");
+  if (vsCPU === true) {
+    player1 = new Player("Player", "X");
+    player2 = new Player("CPU", "O", true);
+  } else {
+    player1 = new Player(player1Name != "" ? player1Name : "Player 1", "X");
 
-  player2 = new Player(player2Name != "" ? player2Name : "Player 2", "O");
-
-  return [player1, player2];
+    player2 = new Player(player2Name != "" ? player2Name : "Player 2", "O");
+  }
 };
 
 export const startGame = () => {
@@ -23,13 +37,23 @@ export const startGame = () => {
   turn(true);
 };
 
-export const getWhoseTurn = () => whoseTurn;
+//export const getWhoseTurn = () => whoseTurn;
 
 const turn = (newGame = false) => {
   if (newGame === true) {
     whoseTurn = marks[Math.floor(Math.random() * marks.length)];
   } else {
     whoseTurn = marks.filter((mark) => mark !== whoseTurn)[0]; //is there a better way to switch turns
+  }
+
+  const currentPlayersTurn = [player1, player2].filter(
+    (player) => player.mark === whoseTurn
+  )[0]; //is there a better way
+
+  displayMessage(`${currentPlayersTurn.name}'s turn`);
+
+  if (currentPlayersTurn.isCPU === true) {
+    CPUmove();
   }
 };
 
@@ -38,22 +62,18 @@ export const move = (row, col) => {
     turnCount++;
 
     setBoardValue(row, col, whoseTurn);
+    updateBoardCell(row, col, whoseTurn);
 
     if (checkWin(row, col, whoseTurn)) return;
 
     turn();
-    displayMessage(
-      `${
-        [player1, player2].filter((player) => player.mark === whoseTurn)[0].name //is there a better way
-      }'s turn`
-    );
   }
 };
 
 const checkWin = (row, col, mark) => {
-  //col win
   let board = getBoard();
 
+  //col win
   for (let i = 0; i < 3; i++) {
     if (board[i][col] != mark) {
       break;
@@ -122,12 +142,14 @@ const reportWin = (winningMark) => {
 
 export function playAgain() {
   resetBoard();
-
   startGame();
-
-  displayMessage(
-    `${
-      [player1, player2].filter((player) => player.mark === whoseTurn)[0].name
-    }'s turn`
-  );
 }
+
+const CPUmove = () => {
+  const availableMoves = getEmptySpaceIndecies();
+
+  const chosenMove =
+    availableMoves[Math.floor(Math.random() * availableMoves.length)];
+
+  move(chosenMove[0], chosenMove[1]);
+};

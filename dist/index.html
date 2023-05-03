@@ -10,10 +10,30 @@
   <body>
     <h1>Tic-Tac-Toe</h1>
     <form>
-      <label for="player1-name">Player 1: </label>
-      <input type="text" id="player1-name" placeholder="Name" />
-      <label for="player2-name">Player 2: </label>
-      <input type="text" id="player2-name" placeholder="Name" />
+      <fieldset id="mode-selection">
+        <input type="radio" id="mode-cpu" name="mode" />
+        <label for="mode-cpu">VS CPU</label>
+
+        <input type="radio" id="mode-player" name="mode" />
+        <label for="mode-player">VS Player</label>
+      </fieldset>
+
+      <fieldset id="player-names">
+        <label for="player1-name">Player 1: </label>
+        <input
+          type="text"
+          id="player1-name"
+          placeholder="Name"
+          name="player1-name"
+        />
+        <label for="player2-name">Player 2: </label>
+        <input
+          type="text"
+          id="player2-name"
+          placeholder="Name"
+          name="player2-name"
+        />
+      </fieldset>
       <button type="submit">Start</button>
     </form>
     <h3 id="game-message"></h3>
