@@ -37,8 +37,6 @@ export const startGame = () => {
   turn(true);
 };
 
-//export const getWhoseTurn = () => whoseTurn;
-
 const turn = (newGame = false) => {
   if (newGame === true) {
     whoseTurn = marks[Math.floor(Math.random() * marks.length)];
@@ -53,7 +51,7 @@ const turn = (newGame = false) => {
   displayMessage(`${currentPlayersTurn.name}'s turn`);
 
   if (currentPlayersTurn.isCPU === true) {
-    CPUmove();
+    setTimeout(CPUmove, 500);
   }
 };
 
