@@ -1,6 +1,6 @@
-import { getBoardValue } from "./board";
 import { move, createPlayers, playAgain, startGame, setVScpu } from "./game";
 
+//DOM elements
 const cells = document.querySelectorAll(".board-cell");
 const playAgainButton = document.querySelector("#play-again");
 const newGameButton = document.querySelector("#new-game");
@@ -14,36 +14,18 @@ const playerNamesInputContainer = form.querySelector("#player-names");
 const vsPlayerRadioButton = form.querySelector("#mode-player");
 const vsCPUradioButton = form.querySelector("#mode-cpu");
 
-formSubmitButton.classList.add("inactive");
-playerNamesInputContainer.classList.add("inactive");
-boardContainer.classList.add("inactive");
-buttonContainer.classList.add("inactive");
-
-vsPlayerRadioButton.addEventListener("click", () => {
-  playerNamesInputContainer.classList.remove("inactive");
-  formSubmitButton.classList.remove("inactive");
-});
-
-vsCPUradioButton.addEventListener("click", () => {
-  playerNamesInputContainer.classList.add("inactive");
-  formSubmitButton.classList.remove("inactive");
-});
-
+//public functions
 export const updateBoardCell = (row, col, mark) => {
   document.querySelector(
     `[data-row="${row}"][data-column="${col}"]`
   ).textContent = mark;
 };
 
-cells.forEach((cell) => {
-  cell.onclick = () => {
-    const row = Number(cell.dataset.row);
-    const col = Number(cell.dataset.column);
+export const displayMessage = (message) => {
+  messageBox.textContent = message;
+};
 
-    move(row, col);
-  };
-});
-
+//private functions
 const loadGamePage = (e) => {
   e.preventDefault();
 
@@ -63,22 +45,45 @@ const loadGamePage = (e) => {
   startGame();
 };
 
-export const displayMessage = (message) => {
-  messageBox.textContent = message;
-};
-
 const emptyBoard = () => {
   cells.forEach((cell) => {
     cell.textContent = "";
   });
 };
 
+//page initialization
+formSubmitButton.classList.add("inactive");
+playerNamesInputContainer.classList.add("inactive");
+
+boardContainer.classList.add("inactive");
+buttonContainer.classList.add("inactive");
+
+//event listeners
+vsPlayerRadioButton.addEventListener("click", () => {
+  playerNamesInputContainer.classList.remove("inactive");
+  formSubmitButton.classList.remove("inactive");
+});
+
+vsCPUradioButton.addEventListener("click", () => {
+  playerNamesInputContainer.classList.add("inactive");
+  formSubmitButton.classList.remove("inactive");
+});
+
+form.onsubmit = loadGamePage;
+
+cells.forEach((cell) => {
+  cell.onclick = () => {
+    const row = Number(cell.dataset.row);
+    const col = Number(cell.dataset.column);
+
+    move(row, col);
+  };
+});
+
 playAgainButton.onclick = () => {
   emptyBoard();
   playAgain();
 };
-
-form.onsubmit = loadGamePage;
 
 newGameButton.onclick = () => {
   window.location.reload();

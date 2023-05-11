@@ -62,10 +62,21 @@ export const move = (row, col) => {
     setBoardValue(row, col, whoseTurn);
     updateBoardCell(row, col, whoseTurn);
 
-    if (checkWin(row, col, whoseTurn)) return;
+    if (checkWin(row, col, whoseTurn)) {
+      return; //reportWin(whoseTurn);
+    }
 
     turn();
   }
+};
+
+const CPUmove = () => {
+  const availableMoves = getEmptySpaceIndecies();
+
+  const chosenMove =
+    availableMoves[Math.floor(Math.random() * availableMoves.length)];
+
+  move(chosenMove[0], chosenMove[1]);
 };
 
 const checkWin = (row, col, mark) => {
@@ -142,12 +153,3 @@ export function playAgain() {
   resetBoard();
   startGame();
 }
-
-const CPUmove = () => {
-  const availableMoves = getEmptySpaceIndecies();
-
-  const chosenMove =
-    availableMoves[Math.floor(Math.random() * availableMoves.length)];
-
-  move(chosenMove[0], chosenMove[1]);
-};
